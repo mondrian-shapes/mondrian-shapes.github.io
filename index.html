@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+<head>
+<title>Mondrian Shapes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:url" content="http://mondrian-shapes.github.io/" />
+<meta property="og:image" content="http://mondrian-shapes.github.io/000.png" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Procedural internet art." />
+
+<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+
+<link href="jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
+<link href="jquery-ui-1.12.1.custom/jquery-ui.theme.min.css" rel="stylesheet">
+
+<style>
+  div.over {
+    background:#e1e1e1;
+    position:absolute;
+    top:50%;
+    left:50%;
+    padding:0px;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+  }
+  div.center {
+    padding:15px;
+  }
+
+@font-face {
+    font-family: 'luisserra'; /*a name to be used later*/
+    src: url('luisserra.ttf'); /*URL to font*/
+}
+
+
+  div.sig {
+    color:#a1a1a1;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 15px;
+    font-family: 'luisserra';
+  }
+
+a.sig:link {
+    color: #a1a1a1;text-decoration: none;
+}
+
+/* visited link */
+a.sig:visited {
+    color: #a1a1a1;text-decoration: none;
+}
+
+/* mouse over link */
+a.sig:hover {
+    color: #111111;text-decoration: none;
+}
+
+/* selected link */
+a.sig:active {
+    color: #111111;text-decoration: none;
+}
+
+a.nav1:link,
+a.nav1:visited {
+  font-family: helvetica, sans-serif;
+  display: block;
+  font-size: 24px;
+  color: #919191;
+  border-color: #f2f2f2;
+  border-radius: 3px;
+  background-color: #f2f2f2;
+  text-decoration: none;
+  border-width: 1px;
+  border-style: solid;
+  width: 175px;
+  margin: 1px 2px;
+  padding: 5px 5px;
+}
+
+a.nav1:active,
+a.nav1:hover {
+  font-family: helvetica, sans-serif;
+  display: block;
+  font-size: 24px;
+  color: #f2f2f2;
+  border-color: #919191;
+  border-radius: 3px;
+  background-color: #919191;
+  text-decoration: none;
+  border-width: 1px;
+  border-style: solid;
+  width: 175px;
+  margin: 1px 2px;
+  padding: 5px 5px;
+}
+
+body {
+  background-color: #f2f2f2;
+  display: none;
+}
+</style>
+
+<script>
+// document.body.clientWidth
+// document.body.clientHeight
+$( window ).resize(function() {
+  resize();
+});
+
+  function pad(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+  }
+
+  var number = -1;
+  function regenerate() {
+    guess = Math.floor((Math.random() * 3894));
+    
+    while (guess == number) {
+      guess = Math.floor((Math.random() * 3894));
+    }
+    number = guess;
+
+    setTimeout(function() {
+      $('#mondrian').fadeOut(100, function(){
+        $(this).attr('src',  "type05/" + pad(number, 4) + ".svg").bind('onreadystatechange load', function(){
+         if (this.complete) $(this).fadeIn(250);
+        });
+      });
+
+      //$("#mondrian").attr("src", "type03/" + pad(number, 3) + ".svg");
+    }, 200);
+
+  };
+
+  $(document).ready(function() {
+    guess = Math.floor((Math.random() * 3894));
+    
+    while (guess == number) {
+      guess = Math.floor((Math.random() * 3894));
+    }
+    number = guess;
+
+    $('#mondrian').attr('src', "type05/" + pad(number, 4) + ".svg").bind('onreadystatechange load', function() {
+      if (this.complete) $(this).fadeIn(250);
+    });
+
+    resize();
+    //regenerate();
+    $("#regenerate").button().click(
+      function(){ 
+        regenerate();
+    });
+
+    $("body").fadeIn(500);
+  });
+
+  function resize() {
+    //alert($('#mondrian'));
+    //$('body').show();
+    a1 = window.innerWidth * 0.7;
+    a2 = a1 * 0.75
+
+    b2 = window.innerHeight * 0.7;
+    b1 = b2 * 4.0/3.0;
+
+    if (a1 < b1) {
+      c1 = a1;
+      c2 = a2;
+    } else {
+      c1 = b1;
+      c2 = b2;
+    }
+
+    $('img').width(c1);
+    $('img').height(c2);
+  };
+
+</script>
+
+</head>
+<body onmouseup="$('#nav').css('color', '');">
+<div class="over">
+  <img src="empty.png" style="padding:15px" width="800">
+  <img style="display: hidden; position: absolute; top: 0; left: 0; padding:15px; opacity:0.8;filter:alpha(opacity=80);" id="mondrian" src="type05/0000.svg" width="800">
+  <center>
+    <div class="center" width="100%">
+      <!-- button id="regenerate">Regenerate</button --> 
+      <a class="nav1" id="nav" href="#" onmousedown="$('#nav').css('color', '#a0a0a0');" onclick="regenerate();" ondragstart = "return false;">Regenerate</a>
+    </div>
+  </center>
+  </div>
+
+<center>
+  <img style="display: none;" src="000.png">
+  <div class="sig"><i><a class="sig" href="" onclick="return false;">Mathpunk</a></i></div>
+</center>
+</body>
+</html>
